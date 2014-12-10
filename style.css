@@ -36,7 +36,11 @@
 	position:absolute;
 	display:block;	
 }
-.menu-wrapper .new-slide .office-theme li{	
+.menu-wrapper .new-design:HOVER .design-theme{	
+	position:absolute;
+	display:block;	
+}
+.menu-wrapper .new-slide ul li{	
 	margin-top:2px;
 	height:auto;
 	width:200px;	
@@ -80,6 +84,7 @@
 	float:right;
 	border:2px solid;
 	border-color: white;
+	/*position:relative;*/
 }
 
 
