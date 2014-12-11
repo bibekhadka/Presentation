@@ -1,4 +1,9 @@
 function Presentation() {
+	this.count = 0;
+	this.slideDisplay = document.getElementById('light');
+	this.blackDisplay = document.getElementById('fade');
+	this.lightBox = document.getElementById("lightBoxButton");
+
 	this.sidePane = document.getElementById("sidePannel");
 	this.editPane = document.getElementById("editPannel");
 	this.slideArray = [];
@@ -17,6 +22,7 @@ function Presentation() {
 	this.allthumbs = document.getElementsByClassName("thumb");
 
 	this.init = function() {
+
 		that.newSlide.onclick = function() {
 			return function() {
 				var s = new TitleContentSlide(that);
@@ -53,7 +59,34 @@ function Presentation() {
 				var s = new TitleContentSlide(that);
 				that.slideArray.push(s);
 			};
-		}();		
+		}();
+		that.lightBox.onclick = function() {
+			return function() {
+				new DisplaySlide(that);
+				document.onkeydown = function(e) {
+					switch (e.keyCode) {
+					case 37:
+						//alert('left');
+						if (that.count != 0) {
+							that.count = that.count - 1;
+							new DisplaySlide(that);
+						}
+						break;
+					case 39:
+						//alert('right');
+						if (that.count < (that.slideArray.length - 1)) {
+							that.count = that.count + 1;
+							new DisplaySlide(that);
+						}
+						break;
+					case 27:
+						that.slideDisplay.style.display = "none";
+						that.blackDisplay.style.display = "none";
+
+					}
+				};
+			};
+		}();
 	};
 
 	this.showSlide = function(slide) {
@@ -70,13 +103,12 @@ function Presentation() {
 		var editSlide = document.createElement("div");
 		editSlide.id = "slide-edit";
 		editSlide.style.backgroundColor = that.slide.displayJson.backgroundColor;
-		editSlide.style.marginTop = that.slide.displayJson.marginTop;
-		editSlide.style.marginLeft = that.slide.displayJson.marginLeft;
+		editSlide.style.marginTop = "20px";
+		editSlide.style.marginLeft = "180px";
 		editSlide.style.height = that.slide.displayJson.height;
 		editSlide.style.width = that.slide.displayJson.width;
-		editSlide.style.boxShadow = that.slide.displayJson.boxShadow;
-		editSlide.style.fontFamily = that.slide.displayJson.fontFamily;
-		slide.presentation.editPane.appendChild(editSlide);
+		editSlide.style.boxShadow = "10px 10px 10px #888888";
+		that.slide.presentation.editPane.appendChild(editSlide);
 		if (that.slide.displayJson.content) { // if not blank slide
 			for ( var i = 0; i < that.slide.displayJson.content.length; i++) {
 				var slideContent = document.createElement("textarea");
@@ -146,11 +178,8 @@ function TitleSlide(presentation) {
 	this.displayJson = {
 		height : "530px",
 		width : "700px",
-		marginTop : "20px",
-		marginLeft : "180px",
 		backgroundColor : "#FFFFFF",
-		boxShadow : "10px 10px 10px #888888",
-		fontFamily : "cursive,sans-serif",
+		backgroundImage : "url(\"titleSlideBackground.png\")",
 		content : [ {
 			text : "Click to add title",
 			height : "120px",
@@ -160,7 +189,10 @@ function TitleSlide(presentation) {
 			backgroundColor : "#FFFFFF",
 			fontFamily : "cursive,sans-serif",
 			textAlign : "center",
-			lineHeight : "120px"
+			lineHeight : "120px",
+			color : "#000000",
+			fontSize : "14px",
+			backgroundImage : "url(\"pictureSlideContent.png\")"
 		},
 
 		{
@@ -172,7 +204,10 @@ function TitleSlide(presentation) {
 			backgroundColor : "#FFFFFF",
 			fontFamily : "cursive,sans-serif",
 			textAlign : "center",
-			lineHeight : "135px"
+			lineHeight : "135px",
+			color : "#000000",
+			fontSize : "14px",
+			backgroundImage : "url(\"pictureSlideContent.png\")"
 		} ]
 
 	};
@@ -192,10 +227,12 @@ function TitleSlide(presentation) {
 	thumb.style.fontFamily = "cursive,sans-serif";
 	thumb.innerHTML = "Slide " + that.presentation.slideArray.length;
 	that.presentation.sidePane.appendChild(thumb);
-	
+
 	that.presentation.newBlackDesign.onclick = function() {
 		return function() {
-			console.log("apply black design" );
+			console.log("apply black design");
+			that.displayJson.backgroundColor = "#000000";
+
 		};
 	}();
 
@@ -228,11 +265,8 @@ function TitleContentSlide(presentation) {
 	this.displayJson = {
 		height : "530px",
 		width : "700px",
-		marginTop : "20px",
-		marginLeft : "180px",
 		backgroundColor : "#FFFFFF",
-		boxShadow : "10px 10px 10px #888888",
-		fontFamily : "cursive,sans-serif",
+		backgroundImage : "url(\"titleContentSlideBackground.png\")",
 		content : [ {
 			text : "Click to add title",
 			height : "90px",
@@ -242,7 +276,10 @@ function TitleContentSlide(presentation) {
 			backgroundColor : "#FFFFFF",
 			fontFamily : "cursive,sans-serif",
 			textAlign : "center",
-			lineHeight : "90px"
+			lineHeight : "90px",
+			color : "#000000",
+			fontSize : "14px",
+			backgroundImage : "url(\"pictureSlideContent.png\")"
 		},
 
 		{
@@ -254,7 +291,10 @@ function TitleContentSlide(presentation) {
 			backgroundColor : "#FFFFFF",
 			fontFamily : "cursive,sans-serif",
 			textAlign : "justified",
-			lineHeight : "30px"
+			lineHeight : "30px",
+			color : "#000000",
+			fontSize : "14px",
+			backgroundImage : "url(\"pictureSlideContent.png\")"
 		} ]
 
 	};
@@ -274,10 +314,11 @@ function TitleContentSlide(presentation) {
 	thumb.style.fontFamily = "cursive,sans-serif";
 	thumb.innerHTML = "Slide " + that.presentation.slideArray.length;
 	that.presentation.sidePane.appendChild(thumb);
-	
+
 	that.presentation.newBlackDesign.onclick = function() {
 		return function() {
-			console.log("apply black design" );
+			console.log("apply black design");
+			that.displayJson.backgroundColor = "#000000";
 		};
 	}();
 
@@ -308,11 +349,8 @@ function TwoContentSlide(presentation) {
 	this.displayJson = {
 		height : "530px",
 		width : "700px",
-		marginTop : "20px",
-		marginLeft : "180px",
 		backgroundColor : "#FFFFFF",
-		boxShadow : "10px 10px 10px #888888",
-		fontFamily : "cursive,sans-serif",
+		backgroundImage : "url(\"TwoContentSlideBackground.png\")",
 		content : [ {
 			text : "Click to add title",
 			height : "90px",
@@ -322,7 +360,10 @@ function TwoContentSlide(presentation) {
 			backgroundColor : "#FFFFFF",
 			fontFamily : "cursive,sans-serif",
 			textAlign : "center",
-			lineHeight : "90px"
+			lineHeight : "90px",
+			color : "#000000",
+			fontSize : "14px",
+			backgroundImage : "url(\"pictureSlideContent.png\")"
 		},
 
 		{
@@ -334,7 +375,10 @@ function TwoContentSlide(presentation) {
 			backgroundColor : "#FFFFFF",
 			fontFamily : "cursive,sans-serif",
 			textAlign : "justified",
-			lineHeight : "30px"
+			lineHeight : "30px",
+			color : "#000000",
+			fontSize : "14px",
+			backgroundImage : "url(\"pictureSlideContent.png\")"
 		}, {
 			text : "Click to add text",
 			height : "350px",
@@ -344,7 +388,10 @@ function TwoContentSlide(presentation) {
 			backgroundColor : "#FFFFFF",
 			fontFamily : "cursive,sans-serif",
 			textAlign : "justified",
-			lineHeight : "30px"
+			lineHeight : "30px",
+			color : "#000000",
+			fontSize : "14px",
+			backgroundImage : "url(\"pictureSlideContent.png\")"
 		} ]
 
 	};
@@ -364,13 +411,15 @@ function TwoContentSlide(presentation) {
 	thumb.style.fontFamily = "cursive,sans-serif";
 	thumb.innerHTML = "Slide " + that.presentation.slideArray.length;
 	that.presentation.sidePane.appendChild(thumb);
-	
+
 	that.presentation.newBlackDesign.onclick = function() {
 		return function() {
-			console.log("apply black design" );
+			console.log("apply black design");
+			that.displayJson.backgroundColor = "#000000";
+			that.presentation.showSlide(that);
 		};
 	}();
-	
+
 	thumb.onclick = function() {
 		for ( var i = 0; i < that.presentation.allthumbs.length; i++) { // to
 			// make
@@ -399,11 +448,9 @@ function BlankSlide(presentation) {
 	this.displayJson = {
 		height : "530px",
 		width : "700px",
-		marginTop : "20px",
-		marginLeft : "180px",
 		backgroundColor : "#FFFFFF",
-		boxShadow : "10px 10px 10px #888888",
-		fontFamily : "cursive,sans-serif"
+		backgroundImage : "url(\"TwoContentSlideBackground.png\")",
+
 	};
 
 	this.presentation = presentation;
@@ -420,13 +467,14 @@ function BlankSlide(presentation) {
 	thumb.style.fontFamily = "cursive,sans-serif";
 	thumb.innerHTML = "Slide " + that.presentation.slideArray.length;
 	that.presentation.sidePane.appendChild(thumb);
-	
+
 	that.presentation.newBlackDesign.onclick = function() {
 		return function() {
-			console.log("apply black design" );
+			console.log("apply black design");
+			that.displayJson.backgroundColor = "#000000";
 		};
 	}();
-	
+
 	thumb.onclick = function() {
 		for ( var i = 0; i < that.presentation.allthumbs.length; i++) { // to
 			// make
@@ -455,11 +503,8 @@ function PictureSlide(presentation) {
 	this.displayJson = {
 		height : "530px",
 		width : "700px",
-		marginTop : "20px",
-		marginLeft : "180px",
 		backgroundColor : "#FFFFFF",
-		boxShadow : "10px 10px 10px #888888",
-		fontFamily : "cursive,sans-serif",
+		backgroundImage : "url(\"pictureSlideContent.png\")",
 		content : [ {
 			text : "Click to add picture",
 			height : "315px",
@@ -469,7 +514,10 @@ function PictureSlide(presentation) {
 			backgroundColor : "#FFFFFF",
 			fontFamily : "cursive,sans-serif",
 			textAlign : "justified",
-			lineHeight : "90px"
+			lineHeight : "90px",
+			color : "#000000",
+			fontSize : "14px",
+			backgroundImage : "url(\"pictureSlideContent.png\")"
 		},
 
 		{
@@ -481,7 +529,10 @@ function PictureSlide(presentation) {
 			backgroundColor : "#FFFFFF",
 			fontFamily : "cursive,sans-serif",
 			textAlign : "justified",
-			lineHeight : "30px"
+			lineHeight : "30px",
+			color : "#000000",
+			fontSize : "14px",
+			backgroundImage : "url(\"pictureSlideContent.png\")"
 		}, {
 			text : "Click to add text",
 			height : "50px",
@@ -491,7 +542,10 @@ function PictureSlide(presentation) {
 			backgroundColor : "#FFFFFF",
 			fontFamily : "cursive,sans-serif",
 			textAlign : "justified",
-			lineHeight : "30px"
+			lineHeight : "30px",
+			color : "#000000",
+			fontSize : "14px",
+			backgroundImage : "url(\"pictureSlideContent.png\")"
 		} ]
 
 	};
@@ -511,13 +565,14 @@ function PictureSlide(presentation) {
 	thumb.style.fontFamily = "cursive,sans-serif";
 	thumb.innerHTML = "Slide " + that.presentation.slideArray.length;
 	that.presentation.sidePane.appendChild(thumb);
-	
+
 	that.presentation.newBlackDesign.onclick = function() {
 		return function() {
-			console.log("apply black design" );
+			console.log("apply black design");
+			that.displayJson.backgroundColor = "#000000";
 		};
 	}();
-	
+
 	thumb.onclick = function() {
 		for ( var i = 0; i < that.presentation.allthumbs.length; i++) { // to
 			// make
@@ -541,5 +596,39 @@ function PictureSlide(presentation) {
 		// that.presentation.editSlideText(that);
 	};
 };
+function DisplaySlide(slide) {
+	this.slide = slide;
+	var that = this;
+	that.slide.slideDisplay.style.display = 'block';
+	that.slide.blackDisplay.style.display = 'block';
+
+	if (that.slide.slideDisplay.hasChildNodes()) { // to remove
+		// previously
+		// displayed
+		// element
+		that.slide.slideDisplay.removeChild(that.slide.slideDisplay.firstChild);
+	}
+	var displaySlide = document.createElement("div");
+	displaySlide.style.backgroundColor = that.slide.slideArray[that.slide.count].displayJson.backgroundColor;
+	displaySlide.style.height = that.slide.slideArray[that.slide.count].displayJson.height;
+	displaySlide.style.width = that.slide.slideArray[that.slide.count].displayJson.width;
+	that.slide.slideDisplay.appendChild(displaySlide);
+	if (that.slide.slideArray[that.slide.count].displayJson.content) { // if not blank slide
+		for ( var i = 0; i < that.slide.slideArray[that.slide.count].displayJson.content.length; i++) {
+			var slideContent = document.createElement("div");
+			slideContent.style.backgroundColor = that.slide.slideArray[that.slide.count].displayJson.content[i].backgroundColor;
+			slideContent.style.marginTop = that.slide.slideArray[that.slide.count].displayJson.content[i].marginTop;
+			slideContent.style.marginLeft = that.slide.slideArray[that.slide.count].displayJson.content[i].marginLeft;
+			slideContent.style.height = that.slide.slideArray[that.slide.count].displayJson.content[i].height;
+			slideContent.style.width = that.slide.slideArray[that.slide.count].displayJson.content[i].width;
+			slideContent.style.textAlign = that.slide.slideArray[that.slide.count].displayJson.content[i].textAlign;
+			slideContent.style.lineHeight = that.slide.slideArray[that.slide.count].displayJson.content[i].lineHeight;
+			// slideContent.style.position="absolute";
+			slideContent.innerHTML = that.slide.slideArray[that.slide.count].displayJson.content[i].text;
+			slideContent.style.fontFamily = that.slide.slideArray[that.slide.count].displayJson.content[i].fontFamily;
+			displaySlide.appendChild(slideContent);
+		}
+	}
+}
 var start = new Presentation();
 start.init();
