@@ -87,6 +87,11 @@ function Presentation() {
 				};
 			};
 		}();
+		that.newBlackDesign.onclick = function() {
+			return function() {
+				new applyBlackDesign(that);
+			};
+		}();
 	};
 
 	this.showSlide = function(slide) {
@@ -120,7 +125,6 @@ function Presentation() {
 				slideContent.style.width = that.slide.displayJson.content[i].width;
 				slideContent.style.textAlign = that.slide.displayJson.content[i].textAlign;
 				slideContent.style.lineHeight = that.slide.displayJson.content[i].lineHeight;
-				// slideContent.style.position="absolute";
 				slideContent.placeholder = that.slide.displayJson.content[i].text;
 				slideContent.style.fontFamily = that.slide.displayJson.content[i].fontFamily;
 				editSlide.appendChild(slideContent);
@@ -228,14 +232,6 @@ function TitleSlide(presentation) {
 	thumb.innerHTML = "Slide " + that.presentation.slideArray.length;
 	that.presentation.sidePane.appendChild(thumb);
 
-	that.presentation.newBlackDesign.onclick = function() {
-		return function() {
-			console.log("apply black design");
-			that.displayJson.backgroundColor = "#000000";
-
-		};
-	}();
-
 	thumb.onclick = function() {
 		for ( var i = 0; i < that.presentation.allthumbs.length; i++) { // to
 			// make
@@ -315,13 +311,6 @@ function TitleContentSlide(presentation) {
 	thumb.innerHTML = "Slide " + that.presentation.slideArray.length;
 	that.presentation.sidePane.appendChild(thumb);
 
-	that.presentation.newBlackDesign.onclick = function() {
-		return function() {
-			console.log("apply black design");
-			that.displayJson.backgroundColor = "#000000";
-		};
-	}();
-
 	thumb.onclick = function() {
 		for ( var i = 0; i < that.presentation.allthumbs.length; i++) { // to
 			// make
@@ -369,7 +358,7 @@ function TwoContentSlide(presentation) {
 		{
 			text : "Click to add text",
 			height : "350px",
-			width : "310px",
+			width : "300px",
 			marginTop : "20px",
 			marginLeft : "40px",
 			backgroundColor : "#FFFFFF",
@@ -382,7 +371,7 @@ function TwoContentSlide(presentation) {
 		}, {
 			text : "Click to add text",
 			height : "350px",
-			width : "310px",
+			width : "300px",
 			marginTop : "20px",
 			marginLeft : "15px",
 			backgroundColor : "#FFFFFF",
@@ -411,14 +400,6 @@ function TwoContentSlide(presentation) {
 	thumb.style.fontFamily = "cursive,sans-serif";
 	thumb.innerHTML = "Slide " + that.presentation.slideArray.length;
 	that.presentation.sidePane.appendChild(thumb);
-
-	that.presentation.newBlackDesign.onclick = function() {
-		return function() {
-			console.log("apply black design");
-			that.displayJson.backgroundColor = "#000000";
-			that.presentation.showSlide(that);
-		};
-	}();
 
 	thumb.onclick = function() {
 		for ( var i = 0; i < that.presentation.allthumbs.length; i++) { // to
@@ -467,13 +448,6 @@ function BlankSlide(presentation) {
 	thumb.style.fontFamily = "cursive,sans-serif";
 	thumb.innerHTML = "Slide " + that.presentation.slideArray.length;
 	that.presentation.sidePane.appendChild(thumb);
-
-	that.presentation.newBlackDesign.onclick = function() {
-		return function() {
-			console.log("apply black design");
-			that.displayJson.backgroundColor = "#000000";
-		};
-	}();
 
 	thumb.onclick = function() {
 		for ( var i = 0; i < that.presentation.allthumbs.length; i++) { // to
@@ -566,13 +540,6 @@ function PictureSlide(presentation) {
 	thumb.innerHTML = "Slide " + that.presentation.slideArray.length;
 	that.presentation.sidePane.appendChild(thumb);
 
-	that.presentation.newBlackDesign.onclick = function() {
-		return function() {
-			console.log("apply black design");
-			that.displayJson.backgroundColor = "#000000";
-		};
-	}();
-
 	thumb.onclick = function() {
 		for ( var i = 0; i < that.presentation.allthumbs.length; i++) { // to
 			// make
@@ -596,7 +563,7 @@ function PictureSlide(presentation) {
 		// that.presentation.editSlideText(that);
 	};
 };
-function DisplaySlide(slide) {
+function DisplaySlide(slide) { //is just a function so place inside presentation
 	this.slide = slide;
 	var that = this;
 	that.slide.slideDisplay.style.display = 'block';
@@ -615,7 +582,7 @@ function DisplaySlide(slide) {
 	that.slide.slideDisplay.appendChild(displaySlide);
 	if (that.slide.slideArray[that.slide.count].displayJson.content) { // if not blank slide
 		for ( var i = 0; i < that.slide.slideArray[that.slide.count].displayJson.content.length; i++) {
-			var slideContent = document.createElement("div");
+			var slideContent = document.createElement("textarea");
 			slideContent.style.backgroundColor = that.slide.slideArray[that.slide.count].displayJson.content[i].backgroundColor;
 			slideContent.style.marginTop = that.slide.slideArray[that.slide.count].displayJson.content[i].marginTop;
 			slideContent.style.marginLeft = that.slide.slideArray[that.slide.count].displayJson.content[i].marginLeft;
@@ -629,6 +596,68 @@ function DisplaySlide(slide) {
 			displaySlide.appendChild(slideContent);
 		}
 	}
+}
+function applyBlackDesign(slide) { //is just a function so place inside presentation
+	this.slide = slide;
+	var that = this;
+	for ( var i = 0; i < that.slide.slideArray.length; i++) {
+		that.slide.slideArray[i].displayJson.backgroundColor = "black";
+		if (that.slide.slideArray[i].displayJson.content) {
+			for ( var j = 0; j < that.slide.slideArray[i].displayJson.content.length; j++) {
+				that.slide.slideArray[i].displayJson.content[j].fontFamily = "Impact, Charcoal, sans-serif";
+			}
+		}
+	}
+	console.log(getObjectClass(that.slide.slideArray[0]));
+}
+/* Returns the class name of the argument or undefined if
+ it's not a valid JavaScript object.
+ */
+function getObjectClass(obj) { //is just a function so place inside presentation
+	if (obj && obj.constructor && obj.constructor.toString) {
+		var arr = obj.constructor.toString().match(/function\s*(\w+)/);
+
+		if (arr && arr.length == 2) {
+			return arr[1];
+		}
+	}
+
+	return undefined;
+}
+function ajax(savedSlides){
+	var data_file = savedSlides;
+	   var http_request = new XMLHttpRequest();
+	   try{
+	      // Opera 8.0+, Firefox, Chrome, Safari
+	      http_request = new XMLHttpRequest();
+	   }catch (e){
+	      // Internet Explorer Browsers
+	      try{
+	         http_request = new ActiveXObject("Msxml2.XMLHTTP");
+	      }catch (e) {
+	         try{
+	            http_request = new ActiveXObject("Microsoft.XMLHTTP");
+	         }catch (e){
+	            // Something went wrong
+	            alert("Your browser broke!");
+	            return false;
+	         }
+	      }
+	   }
+	   http_request.onreadystatechange  = function(){
+	      if (http_request.readyState == 4  )
+	      {
+	        // Javascript function JSON.parse to parse JSON data
+	        var jsonObj = JSON.parse(http_request.responseText);
+
+	        // jsonObj variable now contains the data structure and can
+	        // be accessed 
+	        
+	      }
+	   };
+	   http_request.open("GET", data_file, true);
+	   http_request.send();
+	
 }
 var start = new Presentation();
 start.init();

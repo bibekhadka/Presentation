@@ -79,7 +79,7 @@
 }
 .slide-edit-pannel{
 	height:700px;
-	width:1200px;
+	width:1059px;
 	background-color:#C4C8CD;	
 	float:right;
 	border:2px solid;
@@ -102,7 +102,7 @@
     display: none;
     position: absolute;       
     background-color: white;
-    z-index:1002;    
+    z-index:1002;      
 }
 
 
